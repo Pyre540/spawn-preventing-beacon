@@ -1,0 +1,16 @@
+[
+{
+  "modid": "spawnpreventingbeacon",
+  "name": "Spawn Preventing Beacon",
+  "description": "Simple mod that adds new beacon effect to prevent mob spawning.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Pyre540"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
