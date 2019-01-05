@@ -45,4 +45,8 @@ public class CustomPotion extends Potion {
         mc.getTextureManager().bindTexture(iconTexture);
         Gui.drawModalRectWithCustomSizedTexture(x + 3, y + 3, 0, 0, 18, 18, 18, 18);
     }
+
+    public ResourceLocation getIconTexture() {
+        return iconTexture;
+    }
 }
