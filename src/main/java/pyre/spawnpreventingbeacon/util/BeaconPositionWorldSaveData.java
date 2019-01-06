@@ -65,4 +65,8 @@ public class BeaconPositionWorldSaveData extends WorldSavedData {
         });
         return compound;
     }
+
+    public Map<Long, BlockPos> getBeaconPositions() {
+        return beaconPositions;
+    }
 }
