@@ -1,11 +1,13 @@
 package pyre.spawnpreventingbeacon.util;
 
 import net.minecraft.client.gui.inventory.GuiBeacon;
+import net.minecraft.entity.EntityList;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.potion.Potion;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityBeacon;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.GuiOpenEvent;
@@ -15,7 +17,10 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import pyre.spawnpreventingbeacon.SpawnPreventingBeacon;
+import pyre.spawnpreventingbeacon.config.CurrentModConfig;
 import pyre.spawnpreventingbeacon.gui.CustomBeaconGUI;
 import pyre.spawnpreventingbeacon.init.ModPotions;
 
@@ -24,6 +29,7 @@ import java.lang.reflect.Field;
 @Mod.EventBusSubscriber
 public class EventHandler {
 
+    @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public static void swapBeaconGUI(GuiOpenEvent event) {
         if (event.getGui() instanceof GuiBeacon) {
@@ -48,12 +54,15 @@ public class EventHandler {
 
     @SubscribeEvent
     public static void preventMobSpawn(LivingSpawnEvent.CheckSpawn event) {
-        if (event.getSpawner() == null) {
-            World world = event.getWorld();
-            BlockPos mobPos = new BlockPos(event.getEntity());
-            boolean preventSpawn = shouldPreventSpawn(world, mobPos);
-            if (preventSpawn) {
-                event.setResult(Event.Result.DENY);
+        World world = event.getWorld();
+        if (!world.isRemote && event.getSpawner() == null) {
+            ResourceLocation key = EntityList.getKey(event.getEntity());
+            if (CurrentModConfig.preventedMobs.contains(key.toString())) {
+                BlockPos mobPos = new BlockPos(event.getEntity());
+                boolean preventSpawn = shouldPreventSpawn(world, mobPos);
+                if (preventSpawn) {
+                    event.setResult(Event.Result.DENY);
+                }
             }
         }
     }
@@ -86,6 +95,7 @@ public class EventHandler {
                 mobPos.getY() >= beaconPos.getY() - beaconRange;
     }
 
+    @SideOnly(Side.CLIENT)
     private static IInventory getTileBeacon(GuiBeacon gui) {
         try {
             Field tileBeacon = ReflectionHelper.findField(gui.getClass(), "tileBeacon", "field_147024_w");
