@@ -6,7 +6,7 @@ import pyre.spawnpreventingbeacon.util.Reference;
 @Config(modid = Reference.MOD_ID)
 public class ModConfig {
 
-    @Config.LangKey("spawnpreventingbeacon.config.spawn_prevented_mobs.list")
+    @Config.LangKey("spawnpreventingbeacon.config.spawn_prevented_mobs_list")
     @Config.Comment("List of mobs that should not be able to spawn.")
     public static String[] preventedMobs = {"minecraft:blaze",
             "minecraft:creeper",

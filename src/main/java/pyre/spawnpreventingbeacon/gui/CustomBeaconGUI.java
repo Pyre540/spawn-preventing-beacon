@@ -308,7 +308,7 @@ public class CustomBeaconGUI extends GuiContainer {
             String s = I18n.format(this.effect.getName());
 
             if (this.tier >= 3 && (this.effect != MobEffects.REGENERATION && this.effect != ModPotions.SPAWN_PREVENTING)) {
-                s = s + " II test";
+                s = s + " II";
             }
 
             CustomBeaconGUI.this.drawHoveringText(s, mouseX, mouseY);
